@@ -1,15 +1,17 @@
 NAME_MANDATORY	=	philo
 
-SRCS_MANDATORY	=	philo.c \
+SRCS_MANDATORY	=	main.c \
 					utils.c \
-					ft_parsing.c \
-					initialise_game_struct.c
+					parsing.c \
+					init_structs.c \
+					time_functions.c \
+					algo_philo.c
 
 OBJS_MANDATORY	=	${SRCS_MANDATORY:.c=.o}
 
 CC		= clang
 
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -Wall -Wextra -Werror -pthread -g
 
 RM		= rm -f
 

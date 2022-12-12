@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   algo_philo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 16:26:04 by ltruchel          #+#    #+#             */
-/*   Updated: 2022/12/10 19:03:27 by ltruchel         ###   ########.fr       */
+/*   Created: 2022/12/12 19:25:51 by ltruchel          #+#    #+#             */
+/*   Updated: 2022/12/12 19:36:29 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int ac, char **av)
+void	*algo_philo(void *game)
 {
-	t_game	game;
-
-	if (ac < 5 || ac > 6)
-	{
-		printf(ERROR_FORMAT);
-		return (0);
-	}
-	if (ft_parsing(av) == 0)
-		return (0);
-	initialise_structs(&game, av);
+	(void)game;
+	printf("test\n");
+	return (0);
 }
