@@ -11,7 +11,7 @@ OBJS_MANDATORY	=	${SRCS_MANDATORY:.c=.o}
 
 CC		= clang
 
-CFLAGS	= -Wall -Wextra -Werror -pthread -g
+CFLAGS	= -Wall -Werror -Wextra -pthread -g
 
 RM		= rm -f
 

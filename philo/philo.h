@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 16:26:22 by ltruchel          #+#    #+#             */
-/*   Updated: 2022/12/12 19:35:08 by ltruchel         ###   ########.fr       */
+/*   Updated: 2022/12/13 20:56:29 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,30 @@
 # include <stdbool.h>
 
 # define NC "\033[0m"
-# define RED "\033[1;31m"
+# define B_RED "\033[1;31m"
+# define RED "\033[0;31m"
+# define BLUE "\033[0;34m"
+# define CYAN "\033[0;36m"
+# define PURPLE "\033[0;35m"
+# define YELLOW "\033[0;33m"
 
 # define E_FORMAT "Wrong format, use 5 or 6 arguments\n"
 # define E_DIGIT "Arguments need to be in digits and positive\n"
 # define E_OVERFLOW "Arguments need to fit in unsigned int\n"
 # define E_NULL "Number of philos and/or meal can't be 0\n"
 
-# define THINKING
-# define SLEEPING
-# define STARVING
-# define EATING
-
 typedef struct s_philo
 {
-	size_t			n;
-	size_t			meal_eaten;
-	bool			dead;
-	long long		last_meal;
-	pthread_t		thread;
-	pthread_mutex_t	r_fork;
-	pthread_mutex_t	*l_fork;
+	size_t				n;
+	size_t				next;
+	size_t				prev;
+	size_t				total_meal_eaten;
+	bool				eating;
+	long long			last_meal_ms;
+	pthread_t			thread;
+	pthread_mutex_t		r_fork;
+	pthread_mutex_t		*l_fork;
+	struct s_game		*game;
 }	t_philo;
 
 typedef struct s_game
@@ -51,7 +54,7 @@ typedef struct s_game
 	size_t			time_eat;
 	size_t			time_sleep;
 	size_t			must_eat;
-	long long		time_start;
+	bool			dead;
 	t_philo			*philo;
 }	t_game;
 
@@ -66,6 +69,7 @@ int			check_overflow(char **av);
 
 void		init_structs(t_game *game, char **av);
 void		get_time_start(t_game *game);
+long long	time_action(void);
 void		init_philos(t_game *game);
 
 /* Functions for philosophers' life                                           */

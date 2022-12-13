@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 16:59:38 by ltruchel          #+#    #+#             */
-/*   Updated: 2022/12/12 14:26:10 by ltruchel         ###   ########.fr       */
+/*   Updated: 2022/12/13 14:55:42 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@ int	ft_parsing(char **av)
 {
 	if (check_digits_positive(av) != 0)
 	{
-		printf("%s%s%s", RED, E_DIGIT, NC);
+		printf("%s%s%s", B_RED, E_DIGIT, NC);
 		return (1);
 	}
 	if (check_overflow(av) != 0)
 	{
-		printf("%s%s%s", RED, E_OVERFLOW, NC);
+		printf("%s%s%s", B_RED, E_OVERFLOW, NC);
 		return (2);
 	}
 	if (check_null_args(av) != 0)
 	{
-		printf("%s%s%s", RED, E_NULL, NC);
+		printf("%s%s%s", B_RED, E_NULL, NC);
 		return (3);
 	}
 	return (0);
