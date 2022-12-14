@@ -6,11 +6,51 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 19:46:44 by ltruchel          #+#    #+#             */
-/*   Updated: 2022/12/13 20:03:03 by ltruchel         ###   ########.fr       */
+/*   Updated: 2022/12/14 18:01:14 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	*manage_philo(void *ga)
+{
+	size_t	i;
+	size_t	j;
+	t_game	*game;
+
+	game = (t_game *)ga;
+	while (1)
+	{
+		i = 0;
+		while (i < game->number_philo)
+		{
+			if (time_action() - game->philo[i].last_meal_ms
+				> (long long)game->time_die)
+			{
+				pthread_mutex_lock(&game->print_mutex);
+				pthread_mutex_lock(&game->dead_mutex);
+				game->dead_bool = 1;
+				printf("%s%lld %zu died\n%s",
+					RED, time_action(), game->philo[i].n, NC);
+				pthread_mutex_unlock(&game->print_mutex);
+				pthread_mutex_unlock(&game->dead_mutex);
+				return (NULL);
+			}
+			i++;
+		}
+		i = 0;
+		j = 0;
+		while (i < game->number_philo)
+		{
+			if (game->philo[i].done_must_eat == 1)
+				j++;
+			i++;
+		}
+		if (j == game->number_philo - 1)
+			return (NULL);
+	}
+	return (NULL);
+}
 
 void	init_structs(t_game *game, char **av)
 {
@@ -20,8 +60,15 @@ void	init_structs(t_game *game, char **av)
 	game->time_sleep = ft_atoui(av[4]);
 	if (av[5])
 		game->must_eat = ft_atoui(av[5]);
+	else
+		game->must_eat = 0;
 	time_action();
-	game->dead = 0;
+	game->dead_bool = 0;
+	pthread_mutex_init(&game->print_mutex, NULL);
+	pthread_mutex_init(&game->dead_mutex, NULL);
+	pthread_mutex_init(&game->sleep_mutex, NULL);
+	pthread_mutex_init(&game->think_mutex, NULL);
+	pthread_mutex_init(&game->pick_mutex, NULL);
 	init_philos(game);
 }
 
@@ -57,6 +104,7 @@ void	init_philos(t_game *game)
 		game->philo[i].last_meal_ms = 0;
 		game->philo[i].total_meal_eaten = 0;
 		game->philo[i].eating = 0;
+		game->philo[i].done_must_eat = 0;
 		game->philo[i].game = game;
 		pthread_mutex_init(&game->philo[i].r_fork, NULL);
 		if (i == 0)
@@ -67,10 +115,13 @@ void	init_philos(t_game *game)
 		pthread_create(&game->philo[i].thread, NULL, algo_philo, &game->philo[i]);
 		i++;
 	}
+	pthread_create(&game->manager_philo, NULL, manage_philo, game);
 	i = 0;
 	while (i < game->number_philo)
 	{
 		pthread_join(game->philo[i].thread, NULL);
 		i++;
 	}
+	pthread_join(game->manager_philo, NULL);
+	free(game->philo);
 }
