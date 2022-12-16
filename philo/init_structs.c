@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 19:46:44 by ltruchel          #+#    #+#             */
-/*   Updated: 2022/12/14 18:01:14 by ltruchel         ###   ########.fr       */
+/*   Updated: 2022/12/16 12:54:55 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,21 @@ void	*manage_philo(void *ga)
 		i = 0;
 		while (i < game->number_philo)
 		{
+			pthread_mutex_lock(&game->dead_mutex);
 			if (time_action() - game->philo[i].last_meal_ms
 				> (long long)game->time_die)
 			{
+				pthread_mutex_unlock(&game->dead_mutex);
 				pthread_mutex_lock(&game->print_mutex);
 				pthread_mutex_lock(&game->dead_mutex);
 				game->dead_bool = 1;
 				printf("%s%lld %zu died\n%s",
 					RED, time_action(), game->philo[i].n, NC);
-				pthread_mutex_unlock(&game->print_mutex);
 				pthread_mutex_unlock(&game->dead_mutex);
+				pthread_mutex_unlock(&game->print_mutex);
 				return (NULL);
 			}
+			pthread_mutex_unlock(&game->dead_mutex);
 			i++;
 		}
 		i = 0;
@@ -46,7 +49,7 @@ void	*manage_philo(void *ga)
 				j++;
 			i++;
 		}
-		if (j == game->number_philo - 1)
+		if (j == game->number_philo)
 			return (NULL);
 	}
 	return (NULL);
@@ -103,7 +106,9 @@ void	init_philos(t_game *game)
 		}
 		game->philo[i].last_meal_ms = 0;
 		game->philo[i].total_meal_eaten = 0;
+		pthread_mutex_lock(&game->pick_mutex);
 		game->philo[i].eating = 0;
+		pthread_mutex_unlock(&game->pick_mutex);
 		game->philo[i].done_must_eat = 0;
 		game->philo[i].game = game;
 		pthread_mutex_init(&game->philo[i].r_fork, NULL);
