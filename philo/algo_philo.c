@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:25:51 by ltruchel          #+#    #+#             */
-/*   Updated: 2022/12/16 13:41:51 by ltruchel         ###   ########.fr       */
+/*   Updated: 2022/12/16 17:05:44 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ void	take_forks(t_philo *philo)
 	pthread_mutex_lock(&philo->game->pick_mutex);
 	philo->eating = 1;
 	pthread_mutex_unlock(&philo->game->pick_mutex);
-	print_mutex(philo, BLUE, "has taken a fork\n");
+	print_mutex(philo, BLUE, "has taken a right fork\n");
 	pthread_mutex_lock(philo->l_fork);
-	print_mutex(philo, BLUE, "has taken a fork\n");
+	print_mutex(philo, BLUE, "has taken a left fork\n");
 }
 
 void	single_philo(t_philo *philo)
@@ -114,13 +114,14 @@ void	*algo_philo(void *philosopher)
 	t_philo	*philo;
 
 	philo = (t_philo *)philosopher;
+	usleep(50);
 	if (philo->game->number_philo == 1)
 	{
 		single_philo(philo);
 		return (NULL);
 	}	
 	if (philo->n % 2 == 0)
-		usleep(philo->game->time_eat * 1000);
+		usleep(500);
 	while (1)
 	{
 		pthread_mutex_lock(&philo->game->dead_mutex);
@@ -133,19 +134,9 @@ void	*algo_philo(void *philosopher)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->game->dead_mutex);
-		pthread_mutex_lock(&philo->game->pick_mutex);
-		if (philo->game->philo[philo->prev].eating == 1 || philo->game->philo[philo->next].eating == 1) // || philo->total_meal_eaten > philo->game->philo[philo->prev].total_meal_eaten || philo->total_meal_eaten > philo->game->philo[philo->next].total_meal_eaten)
-		{
-			pthread_mutex_unlock(&philo->game->pick_mutex);
-			usleep(5);
-		}
-		else
-		{
-			pthread_mutex_unlock(&philo->game->pick_mutex);
-			take_forks(philo);
-			ft_eat(philo);
-			ft_sleep(philo);
-		}
+		take_forks(philo);
+		ft_eat(philo);
+		ft_sleep(philo);
 	}
 	return (0);
 }

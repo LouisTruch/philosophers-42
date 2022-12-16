@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 19:46:44 by ltruchel          #+#    #+#             */
-/*   Updated: 2022/12/16 12:54:55 by ltruchel         ###   ########.fr       */
+/*   Updated: 2022/12/16 16:56:59 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,24 +86,6 @@ void	init_philos(t_game *game)
 	while (i < game->number_philo)
 	{
 		game->philo[i].n = i + 1;
-		if (i == 0 || i == game->number_philo - 1)
-		{
-			if (i == 0)
-			{
-				game->philo[i].next = i + 1;
-				game->philo[i].prev = game->number_philo - 1;
-			}
-			if (i == game->number_philo - 1)
-			{
-				game->philo[i].next = 0;
-				game->philo[i].prev = i - 1;
-			}
-		}
-		else
-		{
-			game->philo[i].next = i + 1;
-			game->philo[i].prev = i - 1;
-		}
 		game->philo[i].last_meal_ms = 0;
 		game->philo[i].total_meal_eaten = 0;
 		pthread_mutex_lock(&game->pick_mutex);
