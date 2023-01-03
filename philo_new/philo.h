@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:10:34 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/03 16:36:47 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/03 17:14:20 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ typedef struct s_game
 	pthread_mutex_t	eat_mutex;
 	t_philo			*philo;
 }	t_game;
+
+
 
 /* Parsing functions                                                          */
 

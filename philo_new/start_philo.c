@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:50:54 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/03 16:49:36 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/03 17:14:43 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	*start_philo(void *philosopher)
 		pthread_mutex_lock(&philo->game->dead_mutex);
 		pthread_mutex_lock(&philo->game->eat_mutex);
 		if (philo->game->dead_bool == true || philo->done_eating_all == true)
-		{
+		 { 
 			pthread_mutex_unlock(&philo->game->eat_mutex);
 			pthread_mutex_unlock(&philo->game->dead_mutex);
 			break ;
