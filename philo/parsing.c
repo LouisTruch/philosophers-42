@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 16:59:38 by ltruchel          #+#    #+#             */
-/*   Updated: 2022/12/13 14:55:42 by ltruchel         ###   ########.fr       */
+/*   Created: 2023/01/02 11:14:50 by ltruchel          #+#    #+#             */
+/*   Updated: 2023/01/03 12:36:31 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,25 @@
 
 int	ft_parsing(char **av)
 {
+	if (is_number_av(av) != 0)
+	{
+		printf("%s%s%s", B_RED, E_ONLY_DIGIT, NC);
+		return (1);
+	}
 	if (check_digits_positive(av) != 0)
 	{
-		printf("%s%s%s", B_RED, E_DIGIT, NC);
-		return (1);
+		printf("%s%s%s", B_RED, E_DIGIT_POSITIVE, NC);
+		return (2);
 	}
 	if (check_overflow(av) != 0)
 	{
 		printf("%s%s%s", B_RED, E_OVERFLOW, NC);
-		return (2);
+		return (3);
 	}
 	if (check_null_args(av) != 0)
 	{
 		printf("%s%s%s", B_RED, E_NULL, NC);
-		return (3);
+		return (4);
 	}
 	return (0);
 }

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 19:56:36 by ltruchel          #+#    #+#             */
-/*   Updated: 2022/12/12 14:07:01 by ltruchel         ###   ########.fr       */
+/*   Created: 2023/01/02 11:09:57 by ltruchel          #+#    #+#             */
+/*   Updated: 2023/01/03 12:38:41 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,24 @@ long long	ft_atoui_overflow(const char *str)
 		i++;
 	}	
 	return (rslt * sign);
+}
+
+int	is_number_av(char **av)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	while (av[i])
+	{
+		j = 0;
+		while (av[i][j])
+		{
+			if (av[i][j] < '0' || av[i][j] > '9')
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }

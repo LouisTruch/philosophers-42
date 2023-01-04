@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/12 13:09:40 by ltruchel          #+#    #+#             */
-/*   Updated: 2022/12/13 15:09:45 by ltruchel         ###   ########.fr       */
+/*   Created: 2023/01/02 11:11:22 by ltruchel          #+#    #+#             */
+/*   Updated: 2023/01/04 11:22:34 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ long long	time_action(void)
 {
 	struct timeval		tv;
 	static long long	initial_time;
-	static bool			bool_time = 0;
+	static bool			bool_time;
 	long long			time;
 
-	if (bool_time == 0)
+	if (bool_time == false)
 	{
 		gettimeofday(&tv, NULL);
 		initial_time = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
-		bool_time = 1;
+		bool_time = true;
 		return (0);
 	}
 	else

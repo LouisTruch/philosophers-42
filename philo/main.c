@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 16:26:04 by ltruchel          #+#    #+#             */
-/*   Updated: 2022/12/14 15:27:46 by ltruchel         ###   ########.fr       */
+/*   Created: 2023/01/03 12:11:03 by ltruchel          #+#    #+#             */
+/*   Updated: 2023/01/03 12:17:11 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	if (ft_parsing(av) != 0)
-		return (1);
-	init_structs(&game, av);
+		return (2);
+	init_struct(&game, av);
 	return (0);
 }

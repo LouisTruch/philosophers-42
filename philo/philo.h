@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 16:26:22 by ltruchel          #+#    #+#             */
-/*   Updated: 2022/12/16 16:00:56 by ltruchel         ###   ########.fr       */
+/*   Created: 2023/01/02 11:10:34 by ltruchel          #+#    #+#             */
+/*   Updated: 2023/01/04 13:09:42 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,17 @@
 # define PURPLE	"\033[0;35m"
 # define YELLOW	"\033[0;33m"
 
-# define E_FORMAT	"Wrong format, use 5 or 6 arguments\n"
-# define E_DIGIT	"Arguments need to be in digits and positive\n"
-# define E_OVERFLOW	"Arguments need to fit in unsigned int\n"
-# define E_NULL		"Number of philos and/or meal can't be 0\n"
+# define E_FORMAT			"Wrong format, use 5 or 6 arguments\n"
+# define E_ONLY_DIGIT		"Use only digits in args\n"
+# define E_DIGIT_POSITIVE	"Arguments need to be in digits and positive\n"
+# define E_OVERFLOW			"Arguments need to fit in unsigned int\n"
+# define E_NULL				"Number of philos and/or meal can't be 0\n"
 
 typedef struct s_philo
 {
 	size_t				n;
-	size_t				next;
-	size_t				prev;
 	size_t				total_meal_eaten;
-	bool				eating;
-	bool				done_must_eat;
+	bool				done_eating_all;
 	long long			last_meal_ms;
 	pthread_t			thread;
 	pthread_mutex_t		r_fork;
@@ -59,9 +57,7 @@ typedef struct s_game
 	pthread_t		manager_philo;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	dead_mutex;
-	pthread_mutex_t	sleep_mutex;
-	pthread_mutex_t	think_mutex;
-	pthread_mutex_t	pick_mutex;
+	pthread_mutex_t	eat_mutex;
 	t_philo			*philo;
 }	t_game;
 
@@ -74,19 +70,25 @@ int			check_overflow(char **av);
 
 /* Functions to initialise both game and philo structs                        */
 
-void		init_structs(t_game *game, char **av);
+void		init_struct(t_game *game, char **av);
 void		get_time_start(t_game *game);
+void		init_philo(t_game *game);
+void		*manage_philo(void *game_cast);
+void		join_threads(t_game *game);
+
+/* Time function                                                              */
+
 long long	time_action(void);
-void		init_philos(t_game *game);
 
 /* Functions for philosophers' life                                           */
 
-void		*algo_philo(void *game);
+void		*start_philo(void *game);
 void		print_mutex(t_philo *philo, char *color, char *str);
 
 /* Utils                                                                      */
 
 long long	ft_atoui_overflow(const char *str);
 size_t		ft_atoui(const char *str);
+int			is_number_av(char **ag);
 
 #endif
