@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:11:22 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/02 11:23:19 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/04 11:22:34 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ long long	time_action(void)
 	static bool			bool_time;
 	long long			time;
 
-	if (bool_time == 0)
+	if (bool_time == false)
 	{
 		gettimeofday(&tv, NULL);
 		initial_time = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
-		bool_time = 1;
+		bool_time = true;
 		return (0);
 	}
 	else

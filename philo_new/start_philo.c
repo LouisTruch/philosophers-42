@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:50:54 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/03 17:14:43 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/04 11:53:44 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ void	*start_philo(void *philosopher)
 
 	philo = (t_philo *)philosopher;
 	if (philo->n % 2 != 0)
-		usleep(500);
+		usleep(philo->game->time_eat * 500);
 	while (1)
 	{
 		pthread_mutex_lock(&philo->game->dead_mutex);
 		pthread_mutex_lock(&philo->game->eat_mutex);
 		if (philo->game->dead_bool == true || philo->done_eating_all == true)
-		 { 
+		{
 			pthread_mutex_unlock(&philo->game->eat_mutex);
 			pthread_mutex_unlock(&philo->game->dead_mutex);
 			break ;

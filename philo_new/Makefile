@@ -5,7 +5,8 @@ SRCS_MANDATORY	=	main.c \
 					utils.c \
 					parsing.c \
 					time_functions.c \
-					start_philo.c
+					start_philo.c \
+					manage_philo.c
 
 OBJS_MANDATORY	=	${SRCS_MANDATORY:.c=.o}
 
