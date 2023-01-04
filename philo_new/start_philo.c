@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:50:54 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/04 11:53:44 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/04 13:06:51 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ void	ft_eat(t_philo *philo)
 void	take_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->r_fork);
-	print_mutex(philo, BLUE, "has taken a right fork\n");
+	print_mutex(philo, BLUE, "has taken a fork\n");
 	if (philo->game->number_philo == 1)
 	{
 		usleep(philo->game->time_die * 1000 + 1000);
 		return ;
 	}
 	pthread_mutex_lock(philo->l_fork);
-	print_mutex(philo, BLUE, "has taken a left fork\n");
+	print_mutex(philo, BLUE, "has taken a fork\n");
 }
 
 void	*start_philo(void *philosopher)

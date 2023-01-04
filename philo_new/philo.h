@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:10:34 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/04 12:41:42 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/04 12:44:57 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,13 @@ int			check_overflow(char **av);
 
 void		init_struct(t_game *game, char **av);
 void		get_time_start(t_game *game);
-long long	time_action(void);
 void		init_philo(t_game *game);
 void		*manage_philo(void *game_cast);
 void		join_threads(t_game *game);
+
+/* Time function                                                              */
+
+long long	time_action(void);
 
 /* Functions for philosophers' life                                           */
 
