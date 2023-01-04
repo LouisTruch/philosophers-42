@@ -1,42 +1,31 @@
-NAME_MANDATORY	=	philo
-NAME_BONUS		= 	philo_bonus
+NAME	=	philo_bonus
 
-SRCS_MANDATORY	=
-OBJS_MANDATORY	=	${SRCS_MANDATORY:.c=.o}
+SRCS	=	main.c \
+			init_struct.c \
+			start_philo.c \
+			utils.c \
+			parsing.c \
+			time_functions.c 
 
-SRCS_BONUS		=
-OBJS_BONUS		=	${SRCS_BONUS:.c=.o}
+OBJS	=	${SRCS:.c=.o}
 
-OBJS 			=	${OBJS_MANDATORY} ${OBJS_BONUS}
-BINARY			=	${NAME_MANDATORY} ${NAME_BONUS}
+CC		=	clang
 
-CC		= clang
+CFLAGS	=	-Wall -Wextra -Werror -pthread -g
 
-CFLAGS	= -Wall -Wextra -Werror -g
+RM		=	rm -f
 
-RM		= rm -f
+all		:	${NAME}
 
+.c.o 	:	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
-all		: ${NAME_MANDATORY}
-
-bonus	: ${NAME_BONUS}
-
-.c.o 	: ${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
-
-${NAME_MANDATORY}	:	${OBJS_MANDATORY}
-					${CC} ${CFLAGS} -o ${NAME_MANDATORY} ${OBJS_MANDATORY}
-
-${NAME_BONUS}		:	${OBJS_BONUS}
-					${CC} ${CFLAGS} -o ${NAME_MANDATORY} ${OBJS_MANDATORY}
+${NAME}	:	${OBJS}
+		${CC} ${CFLAGS} -o ${NAME} ${OBJS}
 
 clean	:
 		${RM} ${OBJS}
 
-fclean	:
-		${RM} ${OBJS} ${BINARY}
+fclean	:	clean
+		${RM} ${NAME}
 
-re		: fclean all
-
-rebonus	: fclean bonus
-
-.:PHONY	: all clean fclean re bonus rebonus
+re		:	fclean all

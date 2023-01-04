@@ -71,7 +71,6 @@ int			check_overflow(char **av);
 /* Functions to initialise both game and philo structs                        */
 
 void		init_struct(t_game *game, char **av);
-void		get_time_start(t_game *game);
 void		init_philo(t_game *game);
 void		*manage_philo(void *game_cast);
 void		join_threads(t_game *game);

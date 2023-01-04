@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 12:11:03 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/03 12:17:11 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/04 17:57:28 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ int	main(int ac, char **av)
 	if (ft_parsing(av) != 0)
 		return (2);
 	init_struct(&game, av);
+	start_process(&game);
 	return (0);
 }

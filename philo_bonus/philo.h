@@ -6,18 +6,22 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:10:34 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/04 12:44:57 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/04 19:27:29 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <semaphore.h>
 # include <pthread.h>
+# include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <sys/time.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
 # include <stdbool.h>
 
 # define NC		"\033[0m"
@@ -28,36 +32,34 @@
 # define PURPLE	"\033[0;35m"
 # define YELLOW	"\033[0;33m"
 
-# define E_FORMAT	"Wrong format, use 5 or 6 arguments\n"
-# define E_ONLY_DIGIT	"Use only digits in args\n"
+# define E_FORMAT			"Wrong format, use 5 or 6 arguments\n"
+# define E_ONLY_DIGIT		"Use only digits in args\n"
 # define E_DIGIT_POSITIVE	"Arguments need to be in digits and positive\n"
-# define E_OVERFLOW	"Arguments need to fit in unsigned int\n"
-# define E_NULL		"Number of philos and/or meal can't be 0\n"
+# define E_OVERFLOW			"Arguments need to fit in unsigned int\n"
+# define E_NULL				"Number of philos and/or meal can't be 0\n"
 
 typedef struct s_philo
 {
-	size_t				n;
+	int					id;
 	size_t				total_meal_eaten;
 	bool				done_eating_all;
 	long long			last_meal_ms;
-	pthread_t			thread;
-	pthread_mutex_t		r_fork;
-	pthread_mutex_t		*l_fork;
+	pthread_t			checker;
 	struct s_game		*game;
 }	t_philo;
 
 typedef struct s_game
 {
-	size_t			number_philo;
+	int				number_philo;
 	size_t			time_die;
 	size_t			time_eat;
 	size_t			time_sleep;
 	size_t			must_eat;
 	bool			dead_bool;
-	pthread_t		manager_philo;
-	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	dead_mutex;
-	pthread_mutex_t	eat_mutex;
+	sem_t			*sem_fork;
+	sem_t			*sem_death;
+	sem_t			*sem_print;
+	sem_t			*sem_test;
 	t_philo			*philo;
 }	t_game;
 
@@ -71,10 +73,8 @@ int			check_overflow(char **av);
 /* Functions to initialise both game and philo structs                        */
 
 void		init_struct(t_game *game, char **av);
-void		get_time_start(t_game *game);
-void		init_philo(t_game *game);
-void		*manage_philo(void *game_cast);
-void		join_threads(t_game *game);
+void		start_process(t_game *game);
+void		init_philo(t_game *game, t_philo *philo, int i);
 
 /* Time function                                                              */
 
@@ -82,8 +82,7 @@ long long	time_action(void);
 
 /* Functions for philosophers' life                                           */
 
-void		*start_philo(void *game);
-void		print_mutex(t_philo *philo, char *color, char *str);
+void	start_philo(t_philo *philo);
 
 /* Utils                                                                      */
 
