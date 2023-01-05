@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:14:50 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/03 12:36:31 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/05 14:28:51 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 
 int	ft_parsing(char **av)
 {
-	if (is_number_av(av) != 0)
+	if (is_number_av(av))
 	{
 		printf("%s%s%s", B_RED, E_ONLY_DIGIT, NC);
 		return (1);
 	}
-	if (check_digits_positive(av) != 0)
+	if (check_digits_positive(av))
 	{
 		printf("%s%s%s", B_RED, E_DIGIT_POSITIVE, NC);
 		return (2);
 	}
-	if (check_overflow(av) != 0)
+	if (check_overflow(av))
 	{
 		printf("%s%s%s", B_RED, E_OVERFLOW, NC);
 		return (3);
 	}
-	if (check_null_args(av) != 0)
+	if (check_args(av))
 	{
-		printf("%s%s%s", B_RED, E_NULL, NC);
+		printf("%s%s%s%s", B_RED, E_NULL, E_NUMBER_PHILO, NC);
 		return (4);
 	}
 	return (0);
@@ -73,9 +73,9 @@ int	check_overflow(char **av)
 	return (0);
 }
 
-int	check_null_args(char **av)
+int	check_args(char **av)
 {
-	if (ft_atoui(av[1]) == 0)
+	if (ft_atoui(av[1]) == 0 || ft_atoui(av[1]) > 500)
 		return (1);
 	if (av[5])
 	{

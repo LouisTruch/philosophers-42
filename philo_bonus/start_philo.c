@@ -6,20 +6,17 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 17:13:05 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/04 19:54:16 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/05 14:54:25 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <pthread.h>
-#include <unistd.h>
+#include <semaphore.h>
 
 void	print_sem(t_philo *philo, char *color, char *str)
 {
-	sem_wait(philo->game->sem_death);
 	sem_wait(philo->game->sem_print);
 	printf("%s%lld %i %s%s", color, time_action(), philo->id, str, NC);
-	sem_post(philo->game->sem_death);
 	sem_post(philo->game->sem_print);
 }
 
@@ -30,28 +27,23 @@ void	ft_sleep_think(t_philo *philo)
 	print_sem(philo, YELLOW, "is thinking\n");
 }
 
-void	ft_eat(t_philo *philo)
+void	take_forks_eat(t_philo *philo)
 {
+	sem_wait(philo->game->sem_fork);
+	print_sem(philo, BLUE, "has taken a fork\n");
+	sem_wait(philo->game->sem_fork);
+	print_sem(philo, BLUE, "has taken a fork\n");
 	print_sem(philo, CYAN, "is eating\n");
 	philo->last_meal_ms = time_action();
 	usleep(philo->game->time_eat * 1000);
 	philo->total_meal_eaten += 1;
-	if (philo->total_meal_eaten == philo->game->must_eat)
-	{
-		philo->done_eating_all = true;
-		print_sem(philo, RED, " is done eating\n");
-	}
 	sem_post(philo->game->sem_fork);
 	sem_post(philo->game->sem_fork);
 }
 
-void	take_forks(t_philo *philo)
-{
-	sem_wait(philo->game->sem_fork);
-	print_sem(philo, BLUE, "has taken a fork\n");
-	sem_wait(philo->game->sem_fork);
-	print_sem(philo, BLUE, "has taken a fork\n");
-}
+/* Detached thread from each philo to check if it is dead                    *
+ * If it is, block other philos from printing and increment sem_end          *
+ * Also need to break if philo is done eating to end thread and avoid leaks  */
 
 void	*check_death(void *philo_cast)
 {
@@ -60,29 +52,39 @@ void	*check_death(void *philo_cast)
 	philo = (t_philo *)philo_cast;
 	while (1)
 	{
-		usleep(1000);
+		usleep(100);
 		if (time_action() - philo->last_meal_ms
 			> (long long)philo->game->time_die)
 		{
 			print_sem(philo, RED, " died\n");
-			sem_post(philo->game->sem_test);
+			sem_wait(philo->game->sem_print);
+			sem_post(philo->game->sem_end);
+			break ;
+		}
+		if (philo->game->must_eat
+			&& philo->total_meal_eaten == philo->game->must_eat)
+		{
 			break ;
 		}
 	}
 	return (NULL);
 }
 
+/* Create and detach a thread that check if philo is dead                    *
+ * Then start philo's routine                                                *
+ * Return if philo is done eating to stop process                            */
+
 void	start_philo(t_philo *philo)
 {
-	pthread_create(&philo->checker, NULL, check_death, philo);
-	if (philo->id % 2 == 0)
-		usleep(philo->game->time_eat * 500);
+	pthread_t	own_checker_death;
+
+	pthread_create(&own_checker_death, NULL, check_death, philo);
+	pthread_detach(own_checker_death);
 	while (1)
 	{
-		take_forks(philo);
-		ft_eat(philo);
-		if (philo->done_eating_all == true)
-			break ;
+		take_forks_eat(philo);
+		if (philo->total_meal_eaten == philo->game->must_eat)
+			return ;
 		ft_sleep_think(philo);
 	}
 }

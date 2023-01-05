@@ -6,11 +6,20 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:09:57 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/03 12:38:41 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/05 14:07:53 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	ft_free(t_game *game)
+{
+	sem_close(game->sem_fork);
+	sem_close(game->sem_print);
+	sem_close(game->sem_end);
+	free(game->philo);
+	free(game->pid);
+}
 
 size_t	ft_atoui(const char *str)
 {
