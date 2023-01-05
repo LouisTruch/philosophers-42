@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:09:57 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/05 14:07:53 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/05 17:22:19 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	ft_free(t_game *game)
 	sem_close(game->sem_fork);
 	sem_close(game->sem_print);
 	sem_close(game->sem_end);
+	sem_close(game->sem_eat);
 	free(game->philo);
 	free(game->pid);
 }

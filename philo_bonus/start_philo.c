@@ -6,12 +6,11 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 17:13:05 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/05 15:42:13 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/05 17:46:31 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <semaphore.h>
 
 void	print_sem(t_philo *philo, char *color, char *str)
 {
@@ -34,9 +33,13 @@ void	take_forks_eat(t_philo *philo)
 	sem_wait(philo->game->sem_fork);
 	print_sem(philo, BLUE, "has taken a fork\n");
 	print_sem(philo, CYAN, "is eating\n");
+	sem_wait(philo->game->sem_eat);
 	philo->last_meal_ms = time_action();
+	sem_post(philo->game->sem_eat);
 	usleep(philo->game->time_eat * 1000);
+	sem_wait(philo->game->sem_eat);
 	philo->total_meal_eaten += 1;
+	sem_post(philo->game->sem_eat);
 	sem_post(philo->game->sem_fork);
 	sem_post(philo->game->sem_fork);
 }
@@ -53,9 +56,11 @@ void	*check_death(void *philo_cast)
 	while (1)
 	{
 		usleep(100);
+		sem_wait(philo->game->sem_eat);
 		if (time_action() - philo->last_meal_ms
 			> (long long)philo->game->time_die)
 		{
+			sem_post(philo->game->sem_eat);
 			print_sem(philo, RED, " died\n");
 			sem_wait(philo->game->sem_print);
 			sem_post(philo->game->sem_end);
@@ -64,8 +69,10 @@ void	*check_death(void *philo_cast)
 		if (philo->game->must_eat
 			&& philo->total_meal_eaten == philo->game->must_eat)
 		{
+			sem_post(philo->game->sem_eat);
 			break ;
 		}
+		sem_post(philo->game->sem_eat);
 	}
 	return (NULL);
 }
