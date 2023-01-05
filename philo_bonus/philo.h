@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:10:34 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/05 14:44:19 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/05 18:20:02 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_game
 	sem_t			*sem_print;
 	sem_t			*sem_end;
 	sem_t			*sem_eat;
+	sem_t			*sem_clean;
 	t_philo			*philo;
 }	t_game;
 
@@ -83,7 +84,7 @@ long long	time_action(void);
 
 /* Functions for philosophers' life                                           */
 
-void	start_philo(t_philo *philo);
+void		start_philo(t_philo *philo);
 
 /* Utils                                                                      */
 

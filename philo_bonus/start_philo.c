@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 17:13:05 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/05 17:46:31 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/05 18:17:55 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ void	*check_death(void *philo_cast)
 		if (time_action() - philo->last_meal_ms
 			> (long long)philo->game->time_die)
 		{
-			sem_post(philo->game->sem_eat);
 			print_sem(philo, RED, " died\n");
 			sem_wait(philo->game->sem_print);
 			sem_post(philo->game->sem_end);
+			sem_post(philo->game->sem_eat);
 			break ;
 		}
 		if (philo->game->must_eat

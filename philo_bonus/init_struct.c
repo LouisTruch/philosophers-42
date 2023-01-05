@@ -6,11 +6,13 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 14:34:58 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/05 17:51:56 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/05 18:19:48 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <semaphore.h>
+#include <stdlib.h>
 
 /* Function to init game struct, unlink and init all semaphores               */
 
@@ -29,12 +31,15 @@ void	init_struct(t_game *game, char **av)
 	sem_unlink("/semPrint");
 	sem_unlink("/semEnd");
 	sem_unlink("/semEat");
+	sem_unlink("/semClean");
 	game->sem_fork = sem_open("/semFork", O_CREAT, 0660, game->number_philo);
 	game->sem_print = sem_open("/semPrint", O_CREAT, 0660, 1);
 	game->sem_eat = sem_open("/semEat", O_CREAT, 0660, 1);
 	game->sem_end = sem_open("/semEnd", O_CREAT, 0660, 0);
+	game->sem_clean = sem_open("/semClean", O_CREAT, 0660, 1);
 	if (game->sem_fork == SEM_FAILED || game->sem_print == SEM_FAILED
-		|| game->sem_end == SEM_FAILED || game->sem_eat == SEM_FAILED)
+		|| game->sem_end == SEM_FAILED || game->sem_eat == SEM_FAILED
+		|| game->sem_clean == SEM_FAILED)
 		exit (EXIT_FAILURE);
 }
 
@@ -64,8 +69,9 @@ void	*ft_check_done_eating(void *game_cast)
 		waitpid(game->pid[i], NULL, 0);
 		i++;
 	}
-	sem_post(game->sem_end);
-	return (NULL);
+	sem_wait(game->sem_clean);
+	ft_free(game);
+	exit (EXIT_SUCCESS);
 }
 
 /* Parent thread : Detach a thread to check if philos are done eating        *
@@ -87,11 +93,10 @@ void	start_checker_thread(t_game *game)
 		kill(game->pid[i], SIGKILL);
 		i++;
 	}
-	usleep(game->time_die * 1000);
+	sem_wait(game->sem_clean);
 	ft_free(game);
 	exit (EXIT_SUCCESS);
 }
-
 
 /* Fork parent process 1 time for each philo, then initialise then           * 
  * Use the main process to check if there is one dead                        *
