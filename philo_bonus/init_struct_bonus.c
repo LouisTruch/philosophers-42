@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_struct.c                                      :+:      :+:    :+:   */
+/*   init_struct_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 14:34:58 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/07 15:21:51 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:38:49 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-#include <semaphore.h>
-#include <stdlib.h>
+#include "philo_bonus.h"
 
 /* Function to init game struct, unlink and init all semaphores               */
 
@@ -69,6 +67,7 @@ void	*ft_check_done_eating(void *game_cast)
 		waitpid(game->pid[i], NULL, 0);
 		i++;
 	}
+	sem_post(game->sem_end);
 	return (NULL);
 }
 
@@ -93,7 +92,7 @@ void	start_checker_thread(t_game *game)
 	}
 	usleep(game->time_die * 1000);
 	ft_free(game);
-	exit (EXIT_SUCCESS);
+	return ;
 }
 
 /* Fork parent process 1 time for each philo, then initialise then           * 

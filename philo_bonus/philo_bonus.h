@@ -6,12 +6,12 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:10:34 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/05 18:20:02 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:25:20 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 # include <semaphore.h>
 # include <pthread.h>
@@ -92,5 +92,6 @@ void		ft_free(t_game *game);
 long long	ft_atoui_overflow(const char *str);
 size_t		ft_atoui(const char *str);
 int			is_number_av(char **ag);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

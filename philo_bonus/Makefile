@@ -1,17 +1,17 @@
 NAME	=	philo_bonus
 
-SRCS	=	main.c \
-			init_struct.c \
-			start_philo.c \
-			utils.c \
-			parsing.c \
-			time_functions.c 
+SRCS	=	main_bonus.c \
+			init_struct_bonus.c \
+			start_philo_bonus.c \
+			utils_bonus.c \
+			parsing_bonus.c \
+			time_functions_bonus.c 
 
 OBJS	=	${SRCS:.c=.o}
 
 CC		=	clang
 
-CFLAGS	=	-Wall -Wextra -Werror -pthread -g
+CFLAGS	=	-Wall -Wextra -Werror -pthread
 
 RM		=	rm -f
 

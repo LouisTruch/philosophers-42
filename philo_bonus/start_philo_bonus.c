@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   start_philo.c                                      :+:      :+:    :+:   */
+/*   start_philo_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 17:13:05 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/07 15:18:32 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:46:11 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	print_sem(t_philo *philo, char *color, char *str)
 {
 	sem_wait(philo->game->sem_print);
 	printf("%s%lld %i %s%s", color, time_action(), philo->id, str, NC);
+	if (!ft_strcmp(color, RED))
+		return ;
 	sem_post(philo->game->sem_print);
 }
 
@@ -55,15 +57,13 @@ void	*check_death(void *philo_cast)
 	philo = (t_philo *)philo_cast;
 	while (1)
 	{
-		usleep(10);
+		usleep(100);
 		sem_wait(philo->game->sem_eat);
 		if (time_action() - philo->last_meal_ms
 			> (long long)philo->game->time_die)
 		{
 			print_sem(philo, RED, " died\n");
-			sem_wait(philo->game->sem_print);
 			sem_post(philo->game->sem_end);
-			sem_post(philo->game->sem_eat);
 			break ;
 		}
 		if (philo->game->must_eat
@@ -85,15 +85,19 @@ void	start_philo(t_philo *philo)
 {
 	pthread_t	own_checker_death;
 
+	if (philo->id % 2)
+		usleep(50000);
 	pthread_create(&own_checker_death, NULL, check_death, philo);
 	pthread_detach(own_checker_death);
 	while (1)
 	{
-		if (philo->id % 2)
-			usleep(500);
+		usleep(100);
 		take_forks_eat(philo);
 		if (philo->total_meal_eaten == philo->game->must_eat)
+		{
+			usleep(philo->game->time_die * 1000);
 			return ;
+		}
 		ft_sleep_think(philo);
 	}
 }

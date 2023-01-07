@@ -6,11 +6,11 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:11:22 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/05 14:06:56 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:25:36 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 /* Timestamp function, first time it is called set initial_time              *
  * Then return the elapsed time since the function was first called (in ms)  */

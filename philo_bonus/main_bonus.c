@@ -6,11 +6,11 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 12:11:03 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/04 17:57:28 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:25:02 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 int	main(int ac, char **av)
 {
