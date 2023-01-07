@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:09:57 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/07 16:25:44 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:51:15 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	ft_free(t_game *game)
 	sem_close(game->sem_print);
 	sem_close(game->sem_end);
 	sem_close(game->sem_eat);
-	sem_close(game->sem_clean);
 	free(game->philo);
 	free(game->pid);
 }

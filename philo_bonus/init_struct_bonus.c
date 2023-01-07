@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 14:34:58 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/07 16:38:49 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:50:39 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,12 @@ void	init_struct(t_game *game, char **av)
 	sem_unlink("/semPrint");
 	sem_unlink("/semEnd");
 	sem_unlink("/semEat");
-	sem_unlink("/semClean");
 	game->sem_fork = sem_open("/semFork", O_CREAT, 0660, game->number_philo);
 	game->sem_print = sem_open("/semPrint", O_CREAT, 0660, 1);
 	game->sem_eat = sem_open("/semEat", O_CREAT, 0660, 1);
 	game->sem_end = sem_open("/semEnd", O_CREAT, 0660, 0);
-	game->sem_clean = sem_open("/semClean", O_CREAT, 0660, 1);
 	if (game->sem_fork == SEM_FAILED || game->sem_print == SEM_FAILED
-		|| game->sem_end == SEM_FAILED || game->sem_eat == SEM_FAILED
-		|| game->sem_clean == SEM_FAILED)
+		|| game->sem_end == SEM_FAILED || game->sem_eat == SEM_FAILED)
 		exit (EXIT_FAILURE);
 }
 
