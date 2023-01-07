@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:14:50 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/03 12:36:31 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 14:56:31 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_parsing(char **av)
 	}
 	if (check_null_args(av) != 0)
 	{
-		printf("%s%s%s", B_RED, E_NULL, NC);
+		printf("%s%s%s%s", B_RED, E_NULL, E_NUMBER_PHILO, NC);
 		return (4);
 	}
 	return (0);
@@ -75,7 +75,7 @@ int	check_overflow(char **av)
 
 int	check_null_args(char **av)
 {
-	if (ft_atoui(av[1]) == 0)
+	if (ft_atoui(av[1]) == 0 || ft_atoui(av[1]) > 500)
 		return (1);
 	if (av[5])
 	{

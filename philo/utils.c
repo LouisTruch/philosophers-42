@@ -6,11 +6,34 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:09:57 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/03 12:38:41 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 15:03:05 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	ft_free(t_game *game)
+{
+	size_t	i;
+
+	pthread_mutex_destroy(&game->print_mutex);
+	pthread_mutex_destroy(&game->dead_mutex);
+	pthread_mutex_destroy(&game->eat_mutex);
+	i = 0;
+	if (game->number_philo)
+	{
+		pthread_mutex_destroy(&game->philo[0].r_fork);
+	}
+	else
+	{
+		while (i < game->number_philo)
+		{
+			pthread_mutex_destroy(&game->philo[i].r_fork);
+			i++;
+		}
+	}
+	free (game->philo);
+}
 
 size_t	ft_atoui(const char *str)
 {

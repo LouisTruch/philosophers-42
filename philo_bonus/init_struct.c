@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 14:34:58 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/05 18:19:48 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 15:21:51 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,7 @@ void	*ft_check_done_eating(void *game_cast)
 		waitpid(game->pid[i], NULL, 0);
 		i++;
 	}
-	sem_wait(game->sem_clean);
-	ft_free(game);
-	exit (EXIT_SUCCESS);
+	return (NULL);
 }
 
 /* Parent thread : Detach a thread to check if philos are done eating        *
@@ -93,7 +91,7 @@ void	start_checker_thread(t_game *game)
 		kill(game->pid[i], SIGKILL);
 		i++;
 	}
-	sem_wait(game->sem_clean);
+	usleep(game->time_die * 1000);
 	ft_free(game);
 	exit (EXIT_SUCCESS);
 }
@@ -114,7 +112,6 @@ void	start_process(t_game *game)
 	while (i < game->number_philo)
 	{
 		game->pid[i] = fork();
-		usleep(500);
 		if (game->pid[i] == -1)
 			exit (EXIT_FAILURE);
 		else if (game->pid[i] == 0)

@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:50:54 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/04 13:06:51 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 15:04:47 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	ft_eat(t_philo *philo)
 		philo->done_eating_all = true;
 	pthread_mutex_unlock(&philo->game->eat_mutex);
 	pthread_mutex_unlock(philo->l_fork);
+	if (philo->game->number_philo == 1)
+		return ;
 	pthread_mutex_unlock(&philo->r_fork);
 }
 

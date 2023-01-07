@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 12:40:24 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/04 12:40:47 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 14:59:05 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ bool	check_done_eating(t_game *game)
 	j = 0;
 	while (i < game->number_philo)
 	{
+		usleep(100);
 		pthread_mutex_lock(&game->eat_mutex);
 		if (game->philo[i].done_eating_all == true)
 			j++;

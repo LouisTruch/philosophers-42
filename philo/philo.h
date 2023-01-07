@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:10:34 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/04 13:09:42 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 14:58:32 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define E_DIGIT_POSITIVE	"Arguments need to be in digits and positive\n"
 # define E_OVERFLOW			"Arguments need to fit in unsigned int\n"
 # define E_NULL				"Number of philos and/or meal can't be 0\n"
+# define E_NUMBER_PHILO		"Also number of philo can't be > 500\n"
 
 typedef struct s_philo
 {
@@ -89,5 +90,6 @@ void		print_mutex(t_philo *philo, char *color, char *str);
 long long	ft_atoui_overflow(const char *str);
 size_t		ft_atoui(const char *str);
 int			is_number_av(char **ag);
+void		ft_free(t_game *game);
 
 #endif
