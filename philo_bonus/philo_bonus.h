@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:10:34 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/07 16:49:00 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/07 16:49:50 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@
 # define E_OVERFLOW			"Arguments need to fit in unsigned int\n"
 # define E_NULL				"Number of philos and meal can't be 0\n"
 # define E_NUMBER_PHILO		"Also number of philo can't be > 500\n"
-
-# define DONE_EATING 45
 
 typedef struct s_philo
 {
