@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:10:34 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/07 16:49:50 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/08 16:29:41 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,10 @@
 
 typedef struct s_philo
 {
+	bool				is_dead;
 	int					id;
 	size_t				total_meal_eaten;
+	bool				done_eating_all;
 	long long			last_meal_ms;
 	struct s_game		*game;
 }	t_philo;
@@ -59,7 +61,7 @@ typedef struct s_game
 	sem_t			*sem_print;
 	sem_t			*sem_end;
 	sem_t			*sem_eat;
-	sem_t			*sem_clean;
+	sem_t			*sem_token_end;
 	t_philo			*philo;
 }	t_game;
 
@@ -79,6 +81,7 @@ void		init_philo(t_game *game, t_philo *philo, int i);
 /* Time function                                                              */
 
 long long	time_action(void);
+void		ft_usleep(t_philo *philo, size_t time);
 
 /* Functions for philosophers' life                                           */
 

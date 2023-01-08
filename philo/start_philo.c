@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:50:54 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/07 15:04:47 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/08 15:19:34 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,11 @@
 void	print_mutex(t_philo *philo, char *color, char *str)
 {
 	pthread_mutex_lock(&philo->game->print_mutex);
-	pthread_mutex_lock(&philo->game->dead_mutex);
-	if (philo->game->dead_bool == true)
+	if (!do_action(philo))
 	{
-		pthread_mutex_unlock(&philo->game->dead_mutex);
 		pthread_mutex_unlock(&philo->game->print_mutex);
 		return ;
 	}
-	pthread_mutex_unlock(&philo->game->dead_mutex);
 	printf("%s%lld %zu %s%s", color, time_action(), philo->n, str, NC);
 	pthread_mutex_unlock(&philo->game->print_mutex);
 }
@@ -30,7 +27,7 @@ void	print_mutex(t_philo *philo, char *color, char *str)
 void	ft_sleep_think(t_philo *philo)
 {
 	print_mutex(philo, PURPLE, "is sleeping\n");
-	usleep(philo->game->time_sleep * 1000);
+	ft_usleep(philo, philo->game->time_sleep);
 	print_mutex(philo, YELLOW, "is thinking\n");
 }
 
@@ -40,7 +37,7 @@ void	ft_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->game->eat_mutex);
 	philo->last_meal_ms = time_action();
 	pthread_mutex_unlock(&philo->game->eat_mutex);
-	usleep(philo->game->time_eat * 1000);
+	ft_usleep(philo, philo->game->time_eat);
 	pthread_mutex_lock(&philo->game->eat_mutex);
 	philo->total_meal_eaten += 1;
 	if (philo->total_meal_eaten == philo->game->must_eat)
@@ -71,19 +68,11 @@ void	*start_philo(void *philosopher)
 
 	philo = (t_philo *)philosopher;
 	if (philo->n % 2 != 0)
-		usleep(philo->game->time_eat * 500);
+		usleep(5000);
 	while (1)
 	{
-		pthread_mutex_lock(&philo->game->dead_mutex);
-		pthread_mutex_lock(&philo->game->eat_mutex);
-		if (philo->game->dead_bool == true || philo->done_eating_all == true)
-		{
-			pthread_mutex_unlock(&philo->game->eat_mutex);
-			pthread_mutex_unlock(&philo->game->dead_mutex);
+		if (!do_action(philo))
 			break ;
-		}	
-		pthread_mutex_unlock(&philo->game->eat_mutex);
-		pthread_mutex_unlock(&philo->game->dead_mutex);
 		take_forks(philo);
 		ft_eat(philo);
 		ft_sleep_think(philo);

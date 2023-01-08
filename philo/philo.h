@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:10:34 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/07 14:58:32 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/08 14:30:56 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_game
 	size_t			time_sleep;
 	size_t			must_eat;
 	bool			dead_bool;
+	bool			all_philo_done_eating;
 	pthread_t		manager_philo;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	dead_mutex;
@@ -79,6 +80,7 @@ void		join_threads(t_game *game);
 /* Time function                                                              */
 
 long long	time_action(void);
+void		ft_usleep(t_philo *philo, size_t time);
 
 /* Functions for philosophers' life                                           */
 
@@ -91,5 +93,6 @@ long long	ft_atoui_overflow(const char *str);
 size_t		ft_atoui(const char *str);
 int			is_number_av(char **ag);
 void		ft_free(t_game *game);
+bool		do_action(t_philo *philo);
 
 #endif

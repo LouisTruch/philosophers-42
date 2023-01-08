@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 14:34:58 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/07 16:50:39 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/08 16:43:37 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,12 @@ void	init_struct(t_game *game, char **av)
 	sem_unlink("/semPrint");
 	sem_unlink("/semEnd");
 	sem_unlink("/semEat");
+	sem_unlink("/semTokenEnd");
 	game->sem_fork = sem_open("/semFork", O_CREAT, 0660, game->number_philo);
 	game->sem_print = sem_open("/semPrint", O_CREAT, 0660, 1);
 	game->sem_eat = sem_open("/semEat", O_CREAT, 0660, 1);
 	game->sem_end = sem_open("/semEnd", O_CREAT, 0660, 0);
+	game->sem_token_end = sem_open("/semTokenEnd", O_CREAT, 0660, 0);
 	if (game->sem_fork == SEM_FAILED || game->sem_print == SEM_FAILED
 		|| game->sem_end == SEM_FAILED || game->sem_eat == SEM_FAILED)
 		exit (EXIT_FAILURE);
@@ -43,14 +45,13 @@ void	init_struct(t_game *game, char **av)
 void	init_philo(t_game *game, t_philo *philo, int i)
 {
 	philo->id = i + 1;
+	philo->is_dead = false;
 	philo->total_meal_eaten = 0;
+	philo->done_eating_all = false;
 	philo->last_meal_ms = time_action();
 	philo->game = game;
 	start_philo(philo);
 }
-
-/* Wait for every child(philo) to eat their n meals                          *
- * If they all did, unlock sem_end to kill every child                       */
 
 void	*ft_check_done_eating(void *game_cast)
 {
@@ -61,7 +62,7 @@ void	*ft_check_done_eating(void *game_cast)
 	game = (t_game *)game_cast;
 	while (i < game->number_philo)
 	{
-		waitpid(game->pid[i], NULL, 0);
+		sem_wait(game->sem_token_end);
 		i++;
 	}
 	sem_post(game->sem_end);
@@ -85,9 +86,10 @@ void	start_checker_thread(t_game *game)
 	while (i < game->number_philo)
 	{
 		kill(game->pid[i], SIGKILL);
+		sem_post(game->sem_token_end);
 		i++;
 	}
-	usleep(game->time_die * 1000);
+	usleep(10000);
 	ft_free(game);
 	return ;
 }
@@ -113,7 +115,6 @@ void	start_process(t_game *game)
 		else if (game->pid[i] == 0)
 		{
 			init_philo(game, &game->philo[i], i);
-			usleep(game->time_die);
 			ft_free(game);
 			exit (EXIT_SUCCESS);
 		}

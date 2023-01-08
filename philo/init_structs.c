@@ -6,7 +6,7 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:24:42 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/07 15:03:42 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/08 12:40:51 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	init_struct(t_game *game, char **av)
 		game->must_eat = 0;
 	time_action();
 	game->dead_bool = false;
+	game->all_philo_done_eating = false;
 	pthread_mutex_init(&game->print_mutex, NULL);
 	pthread_mutex_init(&game->dead_mutex, NULL);
 	pthread_mutex_init(&game->eat_mutex, NULL);

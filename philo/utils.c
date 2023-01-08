@@ -6,11 +6,30 @@
 /*   By: ltruchel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 11:09:57 by ltruchel          #+#    #+#             */
-/*   Updated: 2023/01/07 15:03:05 by ltruchel         ###   ########.fr       */
+/*   Updated: 2023/01/08 13:27:28 by ltruchel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+bool	do_action(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->game->dead_mutex);
+	if (philo->game->dead_bool == true)
+	{
+		pthread_mutex_unlock(&philo->game->dead_mutex);
+		return (false);
+	}
+	pthread_mutex_unlock(&philo->game->dead_mutex);
+	pthread_mutex_lock(&philo->game->eat_mutex);
+	if (philo->game->all_philo_done_eating == true)
+	{
+		pthread_mutex_unlock(&philo->game->eat_mutex);
+		return (false);
+	}
+	pthread_mutex_unlock(&philo->game->eat_mutex);
+	return (true);
+}
 
 void	ft_free(t_game *game)
 {
